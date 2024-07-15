@@ -1,5 +1,5 @@
 # Website Content Exporter
-A tool that allows you to export all the content from a website, including its subdomains and pages.
+A tool that allows you to export all the text content from a website, including its subdomains and pages.
 
 ## Features
 - Recursively fetches and extracts text content from a specified website and its subpages.
@@ -21,7 +21,7 @@ A tool that allows you to export all the content from a website, including its s
     ```
 
 ## Usage
-Run the script with the URL of the website you want to export text from:
+Run the script with the URL of the website you want to export text content from:
 ```sh
 node index.js https://www.wikipedia.org/
 ```
