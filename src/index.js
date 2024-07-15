@@ -3,16 +3,28 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 
+
 const visitedUrls = new Set();
 
 const websiteUrl = process.argv[2];
 const outputDir = './';
 
 if (!websiteUrl) {
-    console.error('Usage: node index.js <Website URL>');
+    console.error('\x1b[31mERROR\x1b[0m Usage: node index.js <Website URL>');
     process.exit(1);
 }
 
+console.log(`
+    \x1b[31m ██╗    ██╗ ██████╗███████╗\x1b[0m
+    \x1b[31m ██║    ██║██╔════╝██╔════╝\x1b[0m
+    \x1b[31m ██║ █╗ ██║██║     █████╗\x1b[0m  
+    \x1b[31m ██║███╗██║██║     ██╔══╝\x1b[0m  
+    \x1b[31m ╚███╔███╔╝╚██████╗███████╗\x1b[0m
+    \x1b[31m  ╚══╝╚══╝  ╚═════╝╚══════╝\x1b[0m
+    
+    \x1b[32mINFO\x1b[0m Website Content Exporter powered by https://github.com/IceyMountain
+    \x1b[32mINFO\x1b[0m Loading Modules & Script.
+`)
 const mainExportFileName = `${path.basename(websiteUrl)}.txt`;
 const mainExportFile = path.join(outputDir, mainExportFileName);
 fs.writeFileSync(mainExportFile, '');
@@ -27,7 +39,7 @@ async function fetchHTML(url) {
         const response = await axios.get(url);
         return response.data;
     } catch (error) {
-        console.error(`\x1b[31mERROR\x1b[0m Error fetching ${url}: ${error}`);
+        console.error(`    \x1b[31mERROR\x1b[0m Error fetching ${url}: ${error}`);
         return null;
     }
 }
@@ -51,7 +63,7 @@ async function exportWebsiteText(baseUrl, mainExportFile, depth = 3) {
         const normalizedUrl = new URL(baseUrl).origin + new URL(baseUrl).pathname;
 
         if (visitedUrls.has(normalizedUrl)) {
-            console.log(`\x1b[33mWARNING\x1b[0m Skipping already visited URL: ${baseUrl}`);
+            console.log(`    \x1b[33mWARNING\x1b[0m Skipping already visited URL: ${baseUrl}`);
             return;
         }
 
@@ -64,7 +76,7 @@ async function exportWebsiteText(baseUrl, mainExportFile, depth = 3) {
         const textContent = extractText(html);
 
         fs.appendFileSync(mainExportFile, textContent + '\n');
-        console.log(`\x1b[32mSUCCESS\x1b[0m Text from ${baseUrl} exported.`);
+        console.log(`    \x1b[32mSUCCESS\x1b[0m Text from ${baseUrl} exported.`);
 
         const $ = cheerio.load(html);
         const foundUrls = new Set();
@@ -87,7 +99,7 @@ async function exportWebsiteText(baseUrl, mainExportFile, depth = 3) {
             }
         }
     } catch (error) {
-        console.error(`\x1b[31mERROR\x1b[0m exporting website text: ${error}`);
+        console.error(`    \x1b[31mERROR\x1b[0m exporting website text: ${error}`);
     }
 }
 
